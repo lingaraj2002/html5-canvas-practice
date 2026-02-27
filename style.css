@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background-color: #9bbc0f;
+  color: #0f380f;
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+canvas {
+  background: #1b1b1b;
+  box-shadow: 0 0 10px #8bac0f;
+}
+
+.prev-btn,
+.next-btn {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.prev-btn {
+  left: 8%;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-right: 50px solid #306230;
+}
+
+.prev-btn:hover {
+  border-right-color: #0f380f;
+}
+
+.next-btn {
+  right: 8%;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 50px solid #306230;
+}
+
+.next-btn:hover {
+  border-left-color: #0f380f;
+}
