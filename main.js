@@ -168,9 +168,19 @@ const taskDetails = [
     title: "Click Ripple",
     description: "On click, spawn an expanding ring that fades out.",
   },
+  {
+    task: 31,
+    title: "Gravity Simulation",
+    description: "Drop a ball with gravity; make it bounce on the floor",
+  },
+  {
+    task: 32,
+    title: "Bar Chart",
+    description: "Render an animated bar chart that grows from 0 to its values",
+  },
 ];
 
-let TASK = 30;
+let TASK = 32;
 
 // Always set canvas size in JS for crisp results on HiDPI screens
 function setupCanvas(canvas) {
@@ -665,7 +675,6 @@ function runTask(n) {
 
       const x = e.clientX;
       const y = e.clientY;
-
       function drawRipple() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
@@ -681,6 +690,35 @@ function runTask(n) {
       }
       requestAnimationFrame(drawRipple);
     });
+  } else if (n === 31) {
+    // 31. Gravity Simulation - Drop a ball with gravity; make it bounce on the floor.
+    let y = 40;
+    let goingDown = true;
+    function drawBall() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(400, y, 40, 0, Math.PI * 2);
+      ctx.fillStyle = "red";
+      ctx.fill();
+      ctx.closePath();
+
+      if (goingDown) {
+        y += 2;
+        requestAnimationFrame(drawBall);
+      } else {
+        y -= 2;
+        requestAnimationFrame(drawBall);
+      }
+
+      if (y === canvas.height - 40) {
+        goingDown = false;
+      } else if (y === 40) {
+        goingDown = true;
+      }
+    }
+    requestAnimationFrame(drawBall);
+  } else if (n === 32) {
+    // 32. Bar Chart - Render an animated bar chart that grows from 0 to its values.
   } else {
     // PRACTICE -----------------------------------------------------------
     // Rectangle - Filled
