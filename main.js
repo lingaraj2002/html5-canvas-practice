@@ -178,9 +178,20 @@ const taskDetails = [
     title: "Bar Chart",
     description: "Render an animated bar chart that grows from 0 to its values",
   },
+  {
+    task: 33,
+    title: "Analog Clock",
+    description:
+      "Draw a clock face with hour, minute, and second hands that tick",
+  },
+  {
+    task: 34,
+    title: "Loading Spinner",
+    description: "Animate a spinning arc that acts as a loading indicator",
+  },
 ];
 
-let TASK = 32;
+let TASK = 34;
 
 // Always set canvas size in JS for crisp results on HiDPI screens
 function setupCanvas(canvas) {
@@ -719,6 +730,150 @@ function runTask(n) {
     requestAnimationFrame(drawBall);
   } else if (n === 32) {
     // 32. Bar Chart - Render an animated bar chart that grows from 0 to its values.
+    const value = 180;
+    const maxValue = 200;
+    const chartHeight = 200;
+
+    const baseY = canvas.height - 40;
+    const barWidth = 80;
+    const x = (canvas.width - barWidth) / 2;
+
+    let progress = 0;
+    const speed = 0.02;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.moveTo(50, 20);
+      ctx.lineTo(50, baseY);
+      ctx.lineTo(canvas.width - 20, baseY);
+      ctx.stroke();
+
+      const scaledHeight = (value / maxValue) * chartHeight;
+
+      const animatedHeight = scaledHeight * progress;
+      const y = baseY - animatedHeight;
+
+      ctx.fillStyle = "#3498db";
+      ctx.fillRect(x, y, barWidth, animatedHeight);
+    }
+    function animate() {
+      progress += speed;
+      if (progress > 1) progress = 1;
+
+      draw();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    animate();
+  } else if (n === 33) {
+    // 33. Analog Clock - Draw a clock face with hour, minute, and second hands that tick.
+    const radius = canvas.height / 2;
+    ctx.translate(canvas.width / 2, radius);
+
+    function drawClock() {
+      ctx.clearRect(
+        -canvas.width / 2,
+        -canvas.height / 2,
+        canvas.width,
+        canvas.height,
+      );
+      drawFace();
+      drawNumbers();
+      drawTime();
+    }
+
+    function drawFace() {
+      ctx.beginPath();
+      ctx.arc(0, 0, radius - 30, 0, Math.PI * 2);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Center Dot
+      ctx.beginPath();
+      ctx.arc(0, 0, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#000";
+      ctx.fill();
+    }
+
+    function drawNumbers() {
+      ctx.font = "18px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (let num = 1; num <= 12; num++) {
+        let angle = (num * Math.PI) / 6 - Math.PI / 2;
+        let x = Math.cos(angle) * (radius - 60);
+        let y = Math.sin(angle) * (radius - 60);
+        ctx.fillText(num.toString(), x, y);
+      }
+    }
+
+    function drawTime() {
+      const now = new Date();
+
+      let hour = now.getHours();
+      let minute = now.getMinutes();
+      let second = now.getSeconds();
+
+      // Hour
+      hour = hour % 12;
+      hour = (hour * Math.PI) / 6 + (minute * Math.PI) / (6 * 60);
+      drawHand(hour, radius * 0.5, 6);
+
+      // Minute
+      minute = (minute * Math.PI) / 30;
+      drawHand(minute, radius * 0.6, 4);
+
+      // Second (tick movement)
+      second = (second * Math.PI) / 30;
+      drawHand(second, radius * 0.7, 2, "red");
+    }
+
+    // Draw hand helper
+    function drawHand(angle, length, width, color = "#000") {
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = color;
+
+      ctx.rotate(angle);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -length);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Update every second (tick)
+    setInterval(drawClock, 1000);
+
+    drawClock();
+  } else if (n === 34) {
+    // 34. Loading Spinner - Animate a spinning arc that acts as a loading indicator.
+    let startAngle = 0;
+
+    function drawSpinner() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(400, 300, 40, startAngle, startAngle + Math.PI * 0.5);
+      ctx.strokeStyle = "#3498db";
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+      ctx.stroke();
+      startAngle += 0.05;
+      requestAnimationFrame(drawSpinner);
+    }
+
+    drawSpinner();
   } else {
     // PRACTICE -----------------------------------------------------------
     // Rectangle - Filled
